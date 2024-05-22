@@ -1,7 +1,5 @@
 # Virtual Environment
 
-## Create
-
 ```bash
 cd ~/my_project/path/
 python -m venv .venv

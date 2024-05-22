@@ -1,0 +1,7 @@
+include MANIFEST.in
+include pyproject.toml
+include *.md
+include *.txt
+include *.rst
+recursive-include mypackage/data *
+recursive-include mypackage/examples *
