@@ -3,4 +3,4 @@
 ## Contents
 
 * [virtual environment](virtual_env/README.md)
-* [command line entry point](entry_point)
+* [command line entry point](command_line/README.md)
