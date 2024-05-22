@@ -16,7 +16,7 @@ CLI_DOCS: Final[
     (this command)
 
 hello
-    Runs the 'Hello World!' example.
+    Runs the 'Hello world!' example.
 
 pytest
     Runs the test suite (non-verbose option).
