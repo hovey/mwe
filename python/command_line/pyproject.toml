@@ -48,6 +48,7 @@ find = {}  # Scan the project directory with the default parameters
 # https://setuptools.pypa.io/en/latest/userguide/entry_point.html
 [project.scripts]
 hello="mypackage.command_line:hello"
+mypackage="mypackage.command_line:mymodule"
 # version="mypackage.command_line:module_version"
 
 [project.urls]
