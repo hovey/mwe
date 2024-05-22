@@ -27,7 +27,7 @@ Create a distribution (e.g. a tar.gz file and a .whl file in the dist directory)
 python -m build
 ```
 
-# Developer install
+## Developer install
 
 > setuptools allows you to install a package without copying any files to your interpreter directory (e.g. the site-packages directory). This allows you to modify your source code and have the changes take effect without you having to rebuild and reinstall. Here’s how to do it:
 
@@ -68,6 +68,29 @@ requests           2.32.2
 setuptools         70.0.0
 urllib3            2.2.1
 zipp               3.18.2
+```
+
+## The command line interface
+
+```bash
+(.venv)  (main) chovey@s1088757/Users/chovey/mwe/python/command_line> mypackage
+----------------------------
+This is the mypackage module
+----------------------------
+
+mypackage
+    (this command)
+
+hello
+    Runs the 'Hello World!' example.
+
+pytest
+    Runs the test suite (non-verbose option).
+
+pytest -v
+    Runs the test suite (verbose option).
+
+(.venv)  (main) chovey@s1088757/Users/chovey/mwe/python/command_line> 
 ```
 
 ## References
