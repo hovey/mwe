@@ -2,7 +2,9 @@
 
 minimum working example
 
-![einstein_quotation](img/einstein_quotation.png)
+> *Everything should be made as simple as possible.  
+But no simpler.*  
+-Einstein
 
 ## Contents
 
