@@ -8,4 +8,5 @@ But no simpler.*
 
 ## Contents
 
+* [Git](git.md)
 * [Python](python/README.md)
