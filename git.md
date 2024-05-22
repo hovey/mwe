@@ -1,7 +1,3 @@
-**Table of Contents**
-
-[TOC]
-
 # Git
 
 ## Git for Windows
@@ -143,17 +139,12 @@ git clone git@cee-gitlab.sandia.gov:some_repo/repo_name.git
 
 What is Git LFS?
 
-* Git Large File Service (LFS) is an extension for Git that provides versioning of large files.
+* Git Large File Storage (LFS) is an extension for Git that provides versioning of large files.
 Using Git LFS allows users to keep their repository a manageable size, makes the 
 repo clone and fetch steps faster, all while keeping the same familiar Git workflow, 
 with the same level of permissions control.
 * The [Git LFS Tutorial](https://github.com/git-lfs/git-lfs/wiki/Tutorial) provides a nice
 walk through.
-
-What files are used on this repo with Git LFS?
-
-* Geometry files can all be composed of large geometry files in Exodus format, STL, and diatoms.  
-* See [`.gitattributes`](.gitattributes) for file types that are managed by Git LFS.
 
 The Git LFS server is already built into GitHub and GitLab, so only the Git LFS client
 needs to be installed on one's local machine.
@@ -272,7 +263,7 @@ chovey@s1060600/Users/chovey/demo/exodus> git lfs ls-files
 107844a776 * exodus/some_file_3.g
 ```
 
-> ***Note**: The git-lfs service on the HPC is installed as a module.  Use `module load` as follows:*
+Note: The git-lfs service on the HPC is installed as a module.  Use `module load` as follows:
 
 ```bash
 # formerly: module load git-lfs/git-lfs
@@ -312,7 +303,7 @@ Below are some commonly used Git branch commands, shown by way of example:
       develop
       feature/dat-to-yaml
       feature/square_root
-    * master
+    * main
       yml_refactor
 
 
@@ -327,7 +318,7 @@ Below are some commonly used Git branch commands, shown by way of example:
       develop
       feature/dat-to-yaml
       feature/square_root
-      master
+      main
     * yml_refactor
 
 
@@ -341,7 +332,7 @@ Below are some commonly used Git branch commands, shown by way of example:
       develop
       feature/dat-to-yaml
       feature/square_root
-    * master
+    * main
       json_testing
       yml_refactor
 
@@ -372,16 +363,16 @@ Below are some commonly used Git branch commands, shown by way of example:
 
 
 # create a merge request on the GitLab GUI (not done locally)
-# see https://cee-gitlab.sandia.gov/pygators/engine/-/branches
+
 # After the GitLab repo owner does the merge 
 # then delete the local branch ...
 
-# move to the master branch, then delete a branch
-> git checkout master
+# move to the main branch, then delete a branch
+> git checkout main
 > git branch --delete <branch_name>
 
     # examples
-    > git checkout master
+    > git checkout maain
     > git branch --delete feature/json_refactor
     > git branch -d gui_experiment  # -d is equivalent to --delete
 ```
