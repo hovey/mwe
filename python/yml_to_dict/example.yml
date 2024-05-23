@@ -1,0 +1,24 @@
+# This is an example yml file format, which support comments
+shown: True # bool
+
+dimensios: 3  # int
+pi: 3.14159 # float
+
+name: Chad # string
+path: ~/scratch # another string
+comment: Hello world! # yet other string
+
+groceries:  # list
+  - cabbage
+  - carrots
+  - bell peppers
+
+state: # dict
+  name: New Mexico
+  cities:
+    Albuquerque:
+      population: 1000
+      nickname: The Duke City
+    Santa Fe:
+      population: 500
+      nickname: City Different
