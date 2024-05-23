@@ -45,39 +45,46 @@ class State(NamedTuple):
     cities: list[City]
 
 
-# loop method
-city_names = db["state"]["cities"].keys()
-cities = []  # accumlator
-for city, item in zip(city_names, db["state"]["cities"].values()):
+# ---------------------
+# Method 1: loop method
+# ---------------------
+city_names_v1 = db["state"]["cities"].keys()
+cities_v1 = []  # accumlator
+for city, item in zip(city_names_v1, db["state"]["cities"].values()):
 
     cc = City(name=city, population=item["population"], nickname=item["nickname"])
-    cities.append(cc)
+    cities_v1.append(cc)
 
     print(cc)
 
-nm = State(name=db["state"]["name"], cities=cities)
+state_v1 = State(name=db["state"]["name"], cities=cities_v1)
 
-print(f"{nm.name} has the following cities:")
-for item in nm.cities:
+print(f"{state_v1.name} has the following cities:")
+for item in state_v1.cities:
     print(f"{item.name}, population: {item.population}, nickname: {item.nickname}")
 
 
+# -----------------------------------
+# Method 2: list comprehension method
 # leaves, branches, then trunk
-# list comprehension method
-cities_lc = [
+# -----------------------------------
+
+cities_v2 = [
     City(name=x, population=y["population"], nickname=y["nickname"])
     for (x, y) in zip(db["state"]["cities"].keys(), db["state"]["cities"].values())
 ]
 
-assert nm.cities == cities_lc
+assert cities_v2 == state_v1.cities
 
-nm2 = State(name=db["state"]["name"], cities=cities_lc)
+state_v2 = State(name=db["state"]["name"], cities=cities_v2)
 
-assert nm2 == nm
+assert state_v2 == state_v1
 
-# all-at-once
+# -------------------------
+# Method 3: all-at-once
 # list comprehension method
-nm3 = State(
+# -------------------------
+state_v3 = State(
     name=db["state"]["name"],
     cities=[
         City(name=x, population=y["population"], nickname=y["nickname"])
@@ -85,6 +92,35 @@ nm3 = State(
     ],
 )
 
-assert nm3 == nm
+assert state_v3 == state_v1
+
+# ------------------------------------------------------
+# Method 4: dictionary unpacking with list comprehension
+# pythonic dictionary to namedtuple
+# ------------------------------------------------------
+
+# cc = [
+#     City(name=x, population=y["population"], nickname=y["nickname"])
+#     for (x, y) in zip(db["state"]["cities"].keys(), db["state"]["cities"].values())
+# ]
+
+state_v4 = State(
+    name=db["state"]["name"],
+    cities=[
+        City(**y)
+        for y in [
+            {
+                "name": x,
+                "population": db["state"]["cities"][x]["population"],
+                "nickname": db["state"]["cities"][x]["nickname"],
+            }
+            for x in db["state"]["cities"].keys()
+        ]
+    ],
+)
+
+assert state_v4 == state_v1
 
 # breakpoint()
+#
+# aa = 4

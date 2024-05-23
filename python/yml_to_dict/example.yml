@@ -17,8 +17,8 @@ state: # dict
   name: New Mexico
   cities:
     Albuquerque:
-      population: 1000
-      nickname: The Duke City
-    Santa Fe:
       population: 500
+      nickname: Duke City
+    Santa Fe:
+      population: 90
       nickname: City Different
