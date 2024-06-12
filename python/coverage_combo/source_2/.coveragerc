@@ -1,0 +1,7 @@
+[paths]
+source = 
+    /Users/chovey/mwe/python/coverage_combo/source_1
+    /Users/chovey/mwe/python/coverage_combo/source_2
+
+[run]
+relative_files = True

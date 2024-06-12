@@ -1,0 +1,18 @@
+chovey@s1088757/Users/chovey/mwe/python/coverage_combo> coverage combine --append --keep ./source_1/.
+coverage ./source_2/.coverage 
+
+Combined data file source_1/.coverage
+Combined data file source_2/.coverage
+# creates a new .coverage file
+
+(.venv)  (main) chovey@s1088757/Users/chovey/mwe/python/coverage_combo> coverage html
+
+# above approach did not work.  so, plan b, create source_3 test approach combining the 
+# source from _1 and _2
+
+(.venv)  (main) chovey@s1088757/Users/chovey/mwe/python/coverage_combo/source_3> coverage combine --append --keep ../
+source_1/.coverage ../source_2/.coverage
+Combined data file ../source_1/.coverage
+Combined data file ../source_2/.coverage
+
+# works!
