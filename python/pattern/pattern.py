@@ -1,9 +1,62 @@
 """This module returns the coordinates and connectivity patterns for
 quadrilateral and hexahedral elements.
+
+    ^ Y
+    |
+  y +-----+-----+-----+ ... +-----+ ... +-----+ (x*y), nnp = (x+1)*(y+1)
+    |     |     |     |     |     |     |     |
+    |     |     |     |     |     |     |     |
+    +-----+-----+-----+ ... +-----+ ... +-----+
+    .
+    .
+  3 +-----+-----+ ...   j+1 +-----+ ... +-----+
+    |     |     |           |     |     |     |
+    |     |     |           |     |     |     |
+  2 +-----+-----+ ...     j +-----+ ... +-----+
+                            i    i+1
+
+   x+1   x+2   x+3   x+4
+  1 +-----+-----+-----+ ... +-----+ ... d-----c (nx*ny) -> (2nx)
+    |     |     |     |     |     |     |     |
+    |  1  |  2  |  3  |     |     |     |     |
+  0 1-----2-----3-----4 ... +-----+ ... a-----b --> X
+    0     1     2     3                       x
+
+    a = x-1 + y*nex
+    b = x   + y*nex
+    c = x+2 + y*nex
+    d = x+1 + y*nex
+
+    ----------
+    3 . 4         4 . 5 . 6 .    5 . 6 . 7 . 8
+    . 1 .         . 1 . 2 .      . 1 . 2 . 3 .
+    1 . 2         1 . 2 . 3 .    1 . 2 . 3 . 4
+
+    nx=1, ny=1    nx=2, ny=1     nx=3, ny=1
+    1: 1 2 4 3    1: 1 2 5 4     1: 1 2 6 5
+                  2: 2 3 6 5     2: 2 3 7 6
+                                 3: 3 4 8 7
+    ----------
+    5 . 6         7 . 8 . 9 .    9 .10 .11 .12
+    . 2 .         . 3 . 4 .      . 4 . 5 . 6 .
+    3 . 4         4 . 5 . 6      5 . 6 . 7 . 8
+    . 1 .         . 1 . 2 .      . 1 . 2 . 3 .
+    1 . 2         1 . 2 . 3      1 . 2 . 3 . 4
+
+    nx=1, ny=2    nx=2, ny=2     nx=3, ny=2
+    1: 1 2 4 3    1: 1 2 5 4     1: 1 2 6 5
+    2: 3 4 6 5    2: 2 3 6 5     2: 2 3 7 6
+                  3: 4 5 8 7     3: 3 4 8 7
+                  4: 5 6 9 8     4: 5 6 10 9
+                                 5: 6 7 11 10
+                                 6: 7 8 12 11
+
 """
 
 import itertools
 from typing import NamedTuple
+
+import pdbp  # colorized debugging
 
 
 class Point2D(NamedTuple):
@@ -47,6 +100,113 @@ class Hex(NamedTuple):
     seb: Point2D
     neb: Point2D
     nwb: Point2D
+
+
+def quilt(*, nex: int, ney: int):
+    """Given a grid of nex elements in the x-axis and ney elements in the
+    y, axis, returns the element numbers as a list of list by row (x-axis)."""
+    count = 0
+    elements = []
+    for _ in range(ney):
+        row = []
+        for i in range(nex):
+            count += 1
+            row.append(count)
+        elements.append(row)
+
+    count = 0
+    nodes = []
+    for _ in range(ney + 1):
+        row = []
+        for i in range(nex + 1):
+            count += 1
+            row.append(count)
+        nodes.append(row)
+
+    return [elements, nodes]
+
+
+def connectivity(qq):
+    """Given a quilt of element numbers and node numbers, return the
+    element connectivity."""
+    elements = []
+    e = 0
+    ney = len(qq[0])
+    nex = len(qq[0][0])
+    ns = qq[1]  # nodes, as a list of global node numbers
+    # nel = nex * ney
+
+    for j in range(ney):
+        # row = []
+        for i in range(nex):
+            e += 1  # global element number
+            # row.append([e, ns[j][i], ns[j][i + 1], ns[j + 1][i + 1], ns[j + 1][i]])
+            # local element numbers
+            sw = ns[j][i]  # southwest
+            se = ns[j][i + 1]  # southeast
+            ne = ns[j + 1][i + 1]  # northeast
+            nw = ns[j + 1][i]  # northwest
+            # elements.append([e, ns[j][i], ns[j][i + 1], ns[j + 1][i + 1], ns[j + 1][i]])
+            elements.append([e, sw, se, ne, nw])
+        # elements.append(row)
+
+    return elements
+
+
+if __name__ == "__main__":
+    result = quilt(nex=3, ney=2)
+    print(result)
+
+    result = connectivity(result)
+    print(result)
+
+    a, b = 1, 1
+    r1 = quilt(nex=a, ney=b)
+    assert r1 == [[[1]], [[1, 2], [3, 4]]]
+    r2 = connectivity(r1)
+    assert r2 == [[1, 1, 2, 4, 3]]
+
+    a, b = 2, 1  # overwrite
+    r1 = quilt(nex=a, ney=b)  # overwrite
+    assert r1 == [[[1, 2]], [[1, 2, 3], [4, 5, 6]]]
+    r2 = connectivity(r1)  # overwrite
+    assert connectivity(r1) == [[1, 1, 2, 5, 4], [2, 2, 3, 6, 5]]
+
+    a, b = 3, 1  # overwrite
+    r1 = quilt(nex=a, ney=b)  # overwrite
+    assert r1 == [[[1, 2, 3]], [[1, 2, 3, 4], [5, 6, 7, 8]]]
+    r2 = connectivity(r1)  # overwrite
+    assert connectivity(r1) == [[1, 1, 2, 6, 5], [2, 2, 3, 7, 6], [3, 3, 4, 8, 7]]
+
+    a, b = 1, 2  # overwrite
+    r1 = quilt(nex=a, ney=b)  # overwrite
+    assert r1 == [[[1], [2]], [[1, 2], [3, 4], [5, 6]]]
+    r2 = connectivity(r1)  # overwrite
+    assert connectivity(r1) == [[1, 1, 2, 4, 3], [2, 3, 4, 6, 5]]
+
+    a, b = 2, 2  # overwrite
+    r1 = quilt(nex=a, ney=b)  # overwrite
+    assert r1 == [[[1, 2], [3, 4]], [[1, 2, 3], [4, 5, 6], [7, 8, 9]]]
+    r2 = connectivity(r1)  # overwrite
+    assert connectivity(r1) == [
+        [1, 1, 2, 5, 4],
+        [2, 2, 3, 6, 5],
+        [3, 4, 5, 8, 7],
+        [4, 5, 6, 9, 8],
+    ]
+
+    a, b = 3, 2  # overwrite
+    r1 = quilt(nex=a, ney=b)  # overwrite
+    assert r1 == [[[1, 2, 3], [4, 5, 6]], [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]]
+    r2 = connectivity(r1)  # overwrite
+    assert connectivity(r1) == [
+        [1, 1, 2, 6, 5],
+        [2, 2, 3, 7, 6],
+        [3, 3, 4, 8, 7],
+        [4, 5, 6, 10, 9],
+        [5, 6, 7, 11, 10],
+        [6, 7, 8, 12, 11],
+    ]
 
 
 def QuadMesh(NamedTuple):
