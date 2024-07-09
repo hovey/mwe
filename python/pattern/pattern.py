@@ -212,7 +212,7 @@ def quilt(*, nex: int, ney: int):
 
     Returns:
         A list of lists.  The first sublist is the list of element numbers.
-        the second sublist is a list of global node numbers, as subsublists
+        The second sublist is a list of global node numbers, as subsublists
         for each x-ordered row.
         [
             [
@@ -220,8 +220,7 @@ def quilt(*, nex: int, ney: int):
                 [element numbers along x-axis row 2],
                 [...],
                 [element numbers along x-axis row ney]
-            ]
-            ,
+            ],
             [
                 [global node numbers along x-axis row 1],
                 [global node numbers along x-axis row 2],
@@ -252,6 +251,81 @@ def quilt(*, nex: int, ney: int):
         nodes.append(row)
 
     return [elements, nodes]
+
+
+def lattice(*, nex: int, ney: int, nez: int):
+    """Given a lattice composed of nez layered quilts, returns the element
+    numbers and connectivity as a combined lattice data structure.  See
+    examples in the module documentation.
+
+    Args:
+        nex: The number of elements in the x-axis.
+        ney: The number of elements in the y-axis.
+        nez: The number of elements in the z-axis.
+
+    Returns:
+        A list of lists, subdivided into quilt structures.  The first sublist
+        is the list of element numbers.  The second sublist is a list of global
+        node numbers, as subsublists for each x-ordered row.
+        [
+            [
+                [ // quilt 1
+                    [element numbers along x-axis row 1],
+                    [element numbers along x-axis row 2],
+                    [...],
+                    [element numbers along x-axis row ney]
+                ],
+                [ // quilt 2
+                    [element numbers along x-axis row 1],
+                    [element numbers along x-axis row 2],
+                    [...],
+                    [element numbers along x-axis row ney]
+                ],
+                ...
+                [ // quilt nez
+                    [element numbers along x-axis row 1],
+                    [element numbers along x-axis row 2],
+                    [...],
+                    [element numbers along x-axis row ney]
+                ]
+            ]
+            ,
+            [
+                [ // quilt 1
+                    [global node numbers along x-axis row 1],
+                    [global node numbers along x-axis row 2],
+                    [...],
+                    [global node numbers along x-axis row (ney+1)]
+                ],
+                [ // quilt 2
+                    [global node numbers along x-axis row 1],
+                    [global node numbers along x-axis row 2],
+                    [...],
+                    [global node numbers along x-axis row (ney+1)]
+                ],
+                ...
+                [ // quilt nez+1
+                    [global node numbers along x-axis row 1],
+                    [global node numbers along x-axis row 2],
+                    [...],
+                    [global node numbers along x-axis row (ney+1)]
+                ],
+
+            ]
+        ]
+    """
+    assert nex >= 1, f"Error: nex={nex}, but nex>=1 required."
+    assert ney >= 1, f"Error: ney={ney}, but ney>=1 required."
+    assert nez >= 1, f"Error: nez={nez}, but nez>=1 required."
+
+    breakpoint()
+
+    count = 0
+    elements = []
+    quilts = []
+    # for _ in range(nez):
+
+    aa = 4
 
 
 def connectivity(qq):
@@ -347,6 +421,10 @@ if __name__ == "__main__":
         [5, 6, 7, 11, 10],
         [6, 7, 8, 12, 11],
     ]
+
+    a, b, c = 1, 1, 1  # overwrite
+    r1 = lattice(nex=a, ney=b, nez=c)
+    assert r1 == [[[[1]]], [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]]
 
 
 def QuadMesh(NamedTuple):
