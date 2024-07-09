@@ -3,11 +3,16 @@ quadrilateral and hexahedral elements.
 
 Examples:
 
+    Quadrilateral Element
+
     nex=1, ney=1
         quilt:
+            y
+            ^
+            |
             3 . 4
             . 1 .
-            1 . 2
+            1 . 2 --> x
             Return: [[[1]], [[1, 2], [3, 4]]]
         connectivity:
             Return: [[1, 1, 2, 4, 3]]
@@ -74,6 +79,77 @@ Examples:
                         [5, 6, 7, 11, 10],
                         [6, 7, 8, 12, 11],
                     ]
+
+    Hexahedral Element
+
+    nex=1, ney=1, nez=1
+        lattice:
+                    y
+                    ^
+                    |
+                    3---4
+                  / | 1/|
+                 /  1-/-2 --> x
+                /  / / /
+                7---8 /
+                |/  |/
+                5---6
+               /
+              /
+             z
+            Return: [[[[1]]], [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]]
+        connectivity:
+            Return: [[1, 1, 2, 4, 3, 5, 6, 8, 7]]
+
+    nex=2 ney=1, nez=1
+        lattice:
+                3---4---6
+              / | 1/| 2/|
+             /  1-/-2-/-3
+            /  / / / / /
+           10--11--12 /
+            |/  |/  |/
+            7---8---9
+            Return: [[[[1, 2]]], [[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]]]
+        connectivity:
+            Return: [[1, 1, 2, 4, 3, 7, 8, 11, 12], [2, 2, 3, 6, 4, 8, 9, 12, 11]]
+
+    nex=1, ney=2, nez=1
+        lattice:
+                5---6
+               /| 2/|
+              / 3-/-4
+             / /|/1/|
+           11--12-/-2
+            |/ /|/ /
+            9--10 /
+            |/  |/
+            7---8
+            Return: [[[[1],[2]]], [[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]]]]
+        connectivity:
+            Return: [[1, 1, 2, 4, 3, 7, 8, 10, 9], [2, 3, 4, 6, 5, 9, 10, 12, 11]]
+
+    nex=1, ney=1, nez=2
+        lattice:
+                    3---4
+                   /| 1/|
+                  / 1-/-2
+                 / / / /
+                7---8 /
+               /|/2/|/
+              / 5-/-6
+             / / / /
+           11--12 /
+            |/  |/
+            9--10
+            Return: [[[[1]],[[2]]], [[[1, 2], [3, 4]], [[5, 6], [7, 8]], [[9, 10], [11, 12]]]]
+        connectivity:
+            Return: [[1, 1, 2, 4, 3, 5, 6, 8, 7], [2, 5, 6, 8, 7, 9, 10, 12, 11]]
+
+
+Reference:
+    Exodus II local node numbering scheme for quadilateral and hexahedral elements.
+    https://github.com/autotwin/automesh/blob/main/doc/exodus.md
 """
 
 import itertools
