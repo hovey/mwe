@@ -1,56 +1,79 @@
 """This module returns the coordinates and connectivity patterns for
 quadrilateral and hexahedral elements.
 
-    ^ Y
-    |
-  y +-----+-----+-----+ ... +-----+ ... +-----+ (x*y), nnp = (x+1)*(y+1)
-    |     |     |     |     |     |     |     |
-    |     |     |     |     |     |     |     |
-    +-----+-----+-----+ ... +-----+ ... +-----+
-    .
-    .
-  3 +-----+-----+ ...   j+1 +-----+ ... +-----+
-    |     |     |           |     |     |     |
-    |     |     |           |     |     |     |
-  2 +-----+-----+ ...     j +-----+ ... +-----+
-                            i    i+1
+Examples:
 
-   x+1   x+2   x+3   x+4
-  1 +-----+-----+-----+ ... +-----+ ... d-----c (nx*ny) -> (2nx)
-    |     |     |     |     |     |     |     |
-    |  1  |  2  |  3  |     |     |     |     |
-  0 1-----2-----3-----4 ... +-----+ ... a-----b --> X
-    0     1     2     3                       x
+    nex=1, ney=1
+        quilt:
+            3 . 4
+            . 1 .
+            1 . 2
+            Return: [[[1]], [[1, 2], [3, 4]]]
+        connectivity:
+            Return: [[1, 1, 2, 4, 3]]
 
-    a = x-1 + y*nex
-    b = x   + y*nex
-    c = x+2 + y*nex
-    d = x+1 + y*nex
+    nex=2, ney=1
+        quilt:
+            4 . 5 . 6 .
+            . 1 . 2 .
+            1 . 2 . 3 .
+            Return: [[[1, 2]], [[1, 2, 3], [4, 5, 6]]]
+        connectivity:
+            Return: [[1, 1, 2, 5, 4], [2, 2, 3, 6, 5]]
 
-    ----------
-    3 . 4         4 . 5 . 6 .    5 . 6 . 7 . 8
-    . 1 .         . 1 . 2 .      . 1 . 2 . 3 .
-    1 . 2         1 . 2 . 3 .    1 . 2 . 3 . 4
+    nex=3, ney=1
+        quilt:
+            5 . 6 . 7 . 8
+            . 1 . 2 . 3 .
+            1 . 2 . 3 . 4
+            Return: [[[1, 2, 3]], [[1, 2, 3, 4], [5, 6, 7, 8]]]
+        connectivity:
+            Return: [[1, 1, 2, 6, 5], [2, 2, 3, 7, 6], [3, 3, 4, 8, 7]]
 
-    nx=1, ny=1    nx=2, ny=1     nx=3, ny=1
-    1: 1 2 4 3    1: 1 2 5 4     1: 1 2 6 5
-                  2: 2 3 6 5     2: 2 3 7 6
-                                 3: 3 4 8 7
-    ----------
-    5 . 6         7 . 8 . 9 .    9 .10 .11 .12
-    . 2 .         . 3 . 4 .      . 4 . 5 . 6 .
-    3 . 4         4 . 5 . 6      5 . 6 . 7 . 8
-    . 1 .         . 1 . 2 .      . 1 . 2 . 3 .
-    1 . 2         1 . 2 . 3      1 . 2 . 3 . 4
+    nex=1, ney=2
+        quilt:
+            5 . 6
+            . 2 .
+            3 . 4
+            . 1 .
+            1 . 2
+            Return: [[[1], [2]], [[1, 2], [3, 4], [5, 6]]]
+        connectivity:
+            Return: [[1, 1, 2, 4, 3], [2, 3, 4, 6, 5]]
 
-    nx=1, ny=2    nx=2, ny=2     nx=3, ny=2
-    1: 1 2 4 3    1: 1 2 5 4     1: 1 2 6 5
-    2: 3 4 6 5    2: 2 3 6 5     2: 2 3 7 6
-                  3: 4 5 8 7     3: 3 4 8 7
-                  4: 5 6 9 8     4: 5 6 10 9
-                                 5: 6 7 11 10
-                                 6: 7 8 12 11
+    nex=2, ney=2
+        quilt:
+            7 . 8 . 9
+            . 3 . 4 .
+            4 . 5 . 6
+            . 1 . 2 .
+            1 . 2 . 3
+            Return: [[[1, 2], [3, 4]], [[1, 2, 3], [4, 5, 6], [7, 8, 9]]]
+        connectivity:
+            Return: [
+                        [1, 1, 2, 5, 4],
+                        [2, 2, 3, 6, 5],
+                        [3, 4, 5, 8, 7],
+                        [4, 5, 6, 9, 8],
+                    ]
 
+    nex=3, ney=2
+        quilt:
+            9 .10 .11 .12
+            . 4 . 5 . 6 .
+            5 . 6 . 7 . 8
+            . 1 . 2 . 3 .
+            1 . 2 . 3 . 4
+            Returns: [[[1, 2, 3], [4, 5, 6]], [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]]
+        connectivity:
+            Returns: [
+                        [1, 1, 2, 6, 5],
+                        [2, 2, 3, 7, 6],
+                        [3, 3, 4, 8, 7],
+                        [4, 5, 6, 10, 9],
+                        [5, 6, 7, 11, 10],
+                        [6, 7, 8, 12, 11],
+                    ]
 """
 
 import itertools
@@ -104,12 +127,41 @@ class Hex(NamedTuple):
 
 def quilt(*, nex: int, ney: int):
     """Given a grid of nex elements in the x-axis and ney elements in the
-    y, axis, returns the element numbers as a list of list by row (x-axis)."""
+    y-axis, returns the element numbers and connectivity as combined quilt
+    data structure.  See examples in the module documentation.
+
+    Args:
+        nex: The number of elements in the x-axis.
+        ney: The number of elements in the y-axis.
+
+    Returns:
+        A list of lists.  The first sublist is the list of element numbers.
+        the second sublist is a list of global node numbers, as subsublists
+        for each x-ordered row.
+        [
+            [
+                [element numbers along x-axis row 1],
+                [element numbers along x-axis row 2],
+                [...],
+                [element numbers along x-axis row ney]
+            ]
+            ,
+            [
+                [global node numbers along x-axis row 1],
+                [global node numbers along x-axis row 2],
+                [...],
+                [global node numbers along x-axis row (ney+1)]
+            ]
+        ]
+    """
+    assert nex >= 1, f"Error: nex={nex}, but nex>=1 required."
+    assert ney >= 1, f"Error: ney={ney}, but ney>=1 required."
+
     count = 0
     elements = []
     for _ in range(ney):
         row = []
-        for i in range(nex):
+        for _ in range(nex):
             count += 1
             row.append(count)
         elements.append(row)
@@ -118,7 +170,7 @@ def quilt(*, nex: int, ney: int):
     nodes = []
     for _ in range(ney + 1):
         row = []
-        for i in range(nex + 1):
+        for _ in range(nex + 1):
             count += 1
             row.append(count)
         nodes.append(row)
@@ -128,7 +180,15 @@ def quilt(*, nex: int, ney: int):
 
 def connectivity(qq):
     """Given a quilt of element numbers and node numbers, return the
-    element connectivity."""
+    element connectivity.
+
+    Args:
+        A mesh in a quilt format, see module documentation for more information.
+
+    Returns:
+        A list with an element number and the elements global node numbers in
+            order of the local element numbering scheme.
+    """
     elements = []
     e = 0
     ney = len(qq[0])
@@ -154,11 +214,15 @@ def connectivity(qq):
 
 
 if __name__ == "__main__":
+
+    # example
     result = quilt(nex=3, ney=2)
     print(result)
 
     result = connectivity(result)
     print(result)
+
+    # testing
 
     a, b = 1, 1
     r1 = quilt(nex=a, ney=b)
@@ -225,74 +289,74 @@ def flatten(list_of_lists):
     return itertools.chain.from_iterable(list_of_lists)
 
 
-# def process(nelx: int, nely: int, nelz: int) -> QuadMesh | HexMesh:
-def process(nelx: int, nely: int, nelz: int):
-    """Returns the integer coordinates and connectivity for a quadrilateral (2D)
-    or hexahedral (3D) mesh.
-
-    nelx: The number of elements along the x-axis.
-    nely: The number of elements along the y-axis.
-    nelz: The number of elements along the z-axis, 0 if 2D.
-
-    """
-    if nelz == 0:
-        nnp = (nelx + 1) * (nely + 1)  # number of nodal points
-        # nn = tuple(range(1, nnp + 1))  # node numbers
-        # nnr = tuple(reversed(range(1, nnp + 1)))  # node numbers reversed
-        row_x = tuple(range(nelx))
-        row_y = tuple(0 for x in range(nelx))
-        xs = tuple(row_x for y in range(nely + 1))
-        x = tuple(flatten(xs))
-        ys = tuple(map(lambda y: tuple(itertools.repeat(y, nelx)), range(nely + 1)))
-        # ys = tuple(map(lambda y: itertools.repeat(y, nelx), range(nely + 1)))
-        y = tuple(flatten(ys))
-        coordinates = tuple(zip(x, y))
-
-        # seed = (0, 1, nelx + 2, nelx + 1)
-        # seed = (0, 1, nelx + 1, nelx)
-        # seed = (1, 2, nelx + 3, nelx + 2)
-        seed = (0, 1, 3, 2)
-        # tuple(tuple(x + y for x in (0, 1, 3, 2)) for y in range(1, nelx*nely + 1))
-        # connectivity
-        aa = tuple(tuple(map(lambda e: e + x, (0, 1, 3, 2))) for x in (1, 2))
-        net = tuple(tuple(x + y for x in seed) for y in range(1, nelx * nely + 1))
-        zz = []
-        for y in range(nely):
-            for x in range(nelx):
-                print(f"(x, y) = ({x}, {y})")
-                cc = 1 + x + y * nelx
-                breakpoint()
-        breakpoint()
-        return QuadMesh
-
-    # otherwise nelz>=1, then a 3D mesh
-
-    return HexMesh
-
-
-def test_single_quad():
-    """Tests the pattern for a single quadrilateral element.
-
-    nsd = 2
-    nelx = nely = 1
-       y
-       ^
-      3|      4
-       *-----*
-       |4   3|
-       | (1) |
-       |1   2|
-       *-----* --> x
-      1       2
-    coordinates
-    0, 0
-    1, 0
-    0, 1
-    1, 1
-    connectivity
-    1 2 4 3
-    """
-    known_coor = (((0, 0), (1, 0), (0, 1), (1, 1)),)
-    known_conn = ((1, 2, 4, 3),)
-
-    found = process(nelx=2, nely=2, nelz=0)
+# # def process(nelx: int, nely: int, nelz: int) -> QuadMesh | HexMesh:
+# def process(nelx: int, nely: int, nelz: int):
+#     """Returns the integer coordinates and connectivity for a quadrilateral (2D)
+#     or hexahedral (3D) mesh.
+#
+#     nelx: The number of elements along the x-axis.
+#     nely: The number of elements along the y-axis.
+#     nelz: The number of elements along the z-axis, 0 if 2D.
+#
+#     """
+#     if nelz == 0:
+#         nnp = (nelx + 1) * (nely + 1)  # number of nodal points
+#         # nn = tuple(range(1, nnp + 1))  # node numbers
+#         # nnr = tuple(reversed(range(1, nnp + 1)))  # node numbers reversed
+#         row_x = tuple(range(nelx))
+#         row_y = tuple(0 for x in range(nelx))
+#         xs = tuple(row_x for y in range(nely + 1))
+#         x = tuple(flatten(xs))
+#         ys = tuple(map(lambda y: tuple(itertools.repeat(y, nelx)), range(nely + 1)))
+#         # ys = tuple(map(lambda y: itertools.repeat(y, nelx), range(nely + 1)))
+#         y = tuple(flatten(ys))
+#         coordinates = tuple(zip(x, y))
+#
+#         # seed = (0, 1, nelx + 2, nelx + 1)
+#         # seed = (0, 1, nelx + 1, nelx)
+#         # seed = (1, 2, nelx + 3, nelx + 2)
+#         seed = (0, 1, 3, 2)
+#         # tuple(tuple(x + y for x in (0, 1, 3, 2)) for y in range(1, nelx*nely + 1))
+#         # connectivity
+#         aa = tuple(tuple(map(lambda e: e + x, (0, 1, 3, 2))) for x in (1, 2))
+#         net = tuple(tuple(x + y for x in seed) for y in range(1, nelx * nely + 1))
+#         zz = []
+#         for y in range(nely):
+#             for x in range(nelx):
+#                 print(f"(x, y) = ({x}, {y})")
+#                 cc = 1 + x + y * nelx
+#                 breakpoint()
+#         breakpoint()
+#         return QuadMesh
+#
+#     # otherwise nelz>=1, then a 3D mesh
+#
+#     return HexMesh
+#
+#
+# def test_single_quad():
+#     """Tests the pattern for a single quadrilateral element.
+#
+#     nsd = 2
+#     nelx = nely = 1
+#        y
+#        ^
+#       3|      4
+#        *-----*
+#        |4   3|
+#        | (1) |
+#        |1   2|
+#        *-----* --> x
+#       1       2
+#     coordinates
+#     0, 0
+#     1, 0
+#     0, 1
+#     1, 1
+#     connectivity
+#     1 2 4 3
+#     """
+#     known_coor = (((0, 0), (1, 0), (0, 1), (1, 1)),)
+#     known_conn = ((1, 2, 4, 3),)
+#
+#     found = process(nelx=2, nely=2, nelz=0)
