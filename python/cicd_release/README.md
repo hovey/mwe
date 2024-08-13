@@ -75,12 +75,12 @@ message information.  Create an annotated tag:
 
 ```bash
 # example of an annotated tag
-git tag -a v1.0.0 -m "Release version 1.0.0"
+git tag -a v0.0.1 -m "Release version 0.0.1"
 ```
 
 Push the tag to the repository:
 
 ```bash
 # example continued
-git push origin v1.0.0
+git push origin v0.0.1
 ```
