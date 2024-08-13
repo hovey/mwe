@@ -150,6 +150,25 @@ Commit and push the `release.yml` file to the repository.
 
 ```bash
 git add .github/workflows/release.yml
-git commit -m "Add GitHub Actions workflow for automatic releases"
+git commit -m "add github actions"
 git push origin main
 ```
+
+Create a new tag and push it to trigger the workflow.
+
+```bash
+git tag -a v0.0.4 -m 'fouth release'
+git push origin v0.0.4
+```
+
+This workflow will:
+
+* Trigger on a new tag push that matches the pattern v*.*.*.
+* Check out the code.
+* Set up Python.
+* Install dependencies using pip.
+* Build the project using `python -m build`.
+* Create a GitHub release with the tag name and upload the built assets.
+
+Make sure the `pyproject.toml` is correctly configured for building the project.
+The build package will use the information in `pyproject.toml` to create the distribution files.
