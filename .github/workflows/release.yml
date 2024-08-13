@@ -25,7 +25,7 @@ jobs:
 
       - name: Build the project
         # run: python -m build
-        run |
+        run: |
           cd python/cicd_release
           python -m build
 
