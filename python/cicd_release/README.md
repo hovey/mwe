@@ -192,3 +192,14 @@ If the default `GITHUB_TOKEN` does not have sufficient permissions, you can crea
 * Click "Generate new token".
 * Select the necessary scopes (e.g., both repo and workflow should be checked).
 * Generate the token and copy it.
+
+Add the PAT to Repository Secrets:
+
+* Navigate to the repository on GitHub.  
+* Click on the "Settings" tab in the repository.
+* Navigate to Secrets and Variables:
+  * In the left sidebar, click on "Secrets and variables" and then "Actions."
+  * Add a New Secret:
+  * Click "New repository secret."
+  * Name the secret (e.g., PERSONAL_ACCESS_TOKEN).
+  * Paste the PAT and save it.
