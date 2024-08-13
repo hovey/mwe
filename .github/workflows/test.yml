@@ -35,4 +35,5 @@ jobs:
       - name: Run tests
         run: |
           pip install pytest
+          cd python/cicd_release
           pytest
