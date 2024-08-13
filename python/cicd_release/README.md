@@ -84,3 +84,72 @@ Push the tag to the repository:
 # example continued
 git push origin v0.0.1
 ```
+
+### Automated Release
+
+Use GitHub Actions, which allows the developer to automate workflows directly in 
+the GitHub repository.
+
+In the repo, create a directory named `~/mwe/python/cicd_release/.github/workflows` if it doesn't already exist. 
+Inside this directory, create a file named `release.yml` (or any name you prefer):
+
+```bash
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # This pattern matches tags like v1.0.0, v2.1.3, etc.
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # Specify the Python version you need
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build the project
+        run: python -m build
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Automatic release for version ${{ github.ref }}.
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/*.tar.gz
+          asset_name: myproject-${{ github.ref }}.tar.gz
+          asset_content_type: application/gzip
+```
+
+Commit and push the `release.yml` file to the repository.
+
+```bash
+git add .github/workflows/release.yml
+git commit -m "Add GitHub Actions workflow for automatic releases"
+git push origin main
+```
