@@ -129,7 +129,8 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
@@ -141,7 +142,8 @@ jobs:
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./dist/*.tar.gz
@@ -176,3 +178,17 @@ This workflow will:
 
 Make sure the `pyproject.toml` is correctly configured for building the project.
 The build package will use the information in `pyproject.toml` to create the distribution files.
+
+### Permissions Troubleshooting
+
+The error "Resource not accessible by integration" typically occurs when the GitHub Actions workflow is trying to perform an action that requires higher permissions than those granted by the default `GITHUB_TOKEN`. This can happen, for example, when trying to create a release, push code, or interact with other repositories.
+
+Make sure that the `GITHUB_TOKEN` has the necessary permissions. By default, the `GITHUB_TOKEN` has read and write permissions for the repository where the workflow is running. However, if you need to interact with other repositories or perform actions that require higher permissions, you may need to create a personal access token (PAT) with the required scopes.
+
+If the default `GITHUB_TOKEN` does not have sufficient permissions, you can create a PAT and use it in your workflow:
+
+* Go to your GitHub account.
+* Navigate to "Settings" > "Developer settings" > "Personal access tokens".
+* Click "Generate new token".
+* Select the necessary scopes (e.g., both repo and workflow should be checked).
+* Generate the token and copy it.
