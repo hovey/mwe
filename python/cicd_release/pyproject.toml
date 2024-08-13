@@ -1,0 +1,49 @@
+# reference
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+# PEP621
+# https://peps.python.org/pep-0621/
+#
+# Python Packages
+# https://py-pkgs.org/welcome
+
+# Use automatic discovery from setuptools
+# https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#src-layout
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cicd_example"
+version = "0.0.1"
+authors = [
+  { name="Emily Hunt", email="ehunt@gmail.com" },
+  { name="Jason Doe", email="jason.doe@microsoft.com" },
+]
+description = "some description here"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "black",
+    "flake8",
+    "pytest",
+]
+
+[tool.setuptools.packages]
+find = {}  # Scan the project directory with the default parameters
+
+# Entry Points
+# https://setuptools.pypa.io/en/latest/userguide/entry_point.html
+[project.scripts]
+hello="cicd_example.command_line:hello"
+cicd_example="cicd_example.command_line:mymodule"
+
+[project.urls]
+"Homepage" = "https://some-url"
+"Bug Tracker" = "https://some-url/issues"

@@ -2,7 +2,7 @@
 
 Example:
     To run
-    cd ~/mwe/python/command_line
+    cd ~/mwe/python/cicd_release
     activate the virutal environment, for example:
     source .venv/bin/activate.fish
 
