@@ -157,6 +157,7 @@ git push origin main
 Create a new tag and push it to trigger the workflow.
 
 ```bash
+# for example, with v0.0.4
 git tag -a v0.0.4 -m 'fouth release'
 git push origin v0.0.4
 ```
