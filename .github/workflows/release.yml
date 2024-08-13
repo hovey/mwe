@@ -50,7 +50,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          cd python/cicd_release
-          asset_path: ./dist/*.tar.gz
+          # cd python/cicd_release
+          # asset_path: ./dist/*.tar.gz
+          asset_path: python/cicd_release/dist/*.tar.gz
           asset_name: myproject-${{ github.ref }}.tar.gz
           asset_content_type: application/gzip
