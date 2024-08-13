@@ -30,7 +30,9 @@ jobs:
           python -m build
 
       - name: List files in dist directory
-        run: ls -la ./dist
+        run: |
+          cd python/cicd_release
+          ls -la ./dist
 
       - name: Create GitHub Release
         id: create_release
