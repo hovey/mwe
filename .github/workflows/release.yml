@@ -29,6 +29,9 @@ jobs:
           cd python/cicd_release
           python -m build
 
+      - name: List files in dist directory
+        run: ls -la ./dist
+
       - name: Create GitHub Release
         id: create_release
         # uses: actions/create-release@v1
