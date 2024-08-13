@@ -90,7 +90,10 @@ git push origin v0.0.1
 Use GitHub Actions, which allows the developer to automate workflows directly in 
 the GitHub repository.
 
-In the repo, create a directory named `~/mwe/python/cicd_release/.github/workflows` if it doesn't already exist. 
+In the repo, create a directory named `~/.github/workflows` if it doesn't already exist. 
+
+**Important note:** This is **not** `~/mwe/python/cicd_release/.github/workflows` directory.
+
 Inside this directory, create a file named `release.yml` (or any name you prefer):
 
 ```bash
