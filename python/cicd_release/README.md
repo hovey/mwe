@@ -169,7 +169,7 @@ git push origin v0.0.4
 
 This workflow will:
 
-* Trigger on a new tag push that matches the pattern v*.*.*.
+* Trigger on a new tag push that matches the pattern `v*.*.*`.
 * Check out the code.
 * Set up Python.
 * Install dependencies using pip.
