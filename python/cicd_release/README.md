@@ -201,5 +201,5 @@ Add the PAT to Repository Secrets:
   * In the left sidebar, click on "Secrets and variables" and then "Actions."
   * Add a New Secret:
   * Click "New repository secret."
-  * Name the secret (e.g., PERSONAL_ACCESS_TOKEN).
+  * Name the secret (e.g., `PERSONAL_ACCESS_TOKEN`).
   * Paste the PAT and save it.
