@@ -103,5 +103,3 @@ def test_elements_no_block_ids():
     result = cl.elements_without_block_ids(mesh=known_input)
 
     assert result == gold_output
-
-    aa = 4
