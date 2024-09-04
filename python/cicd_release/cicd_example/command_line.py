@@ -93,3 +93,16 @@ def mesh_element_connectivity(mesh_lattice_connectivity: tuple):
         mesh = mesh + (block_and_elements,)  # overwrite
 
     return mesh
+
+
+def elements_without_block_ids(mesh: tuple) -> tuple:
+    """Given a mesh, removes the block ids and returns only just the
+    element connectivities.
+    """
+
+    aa = ()
+    for item in mesh:
+        bb = item[1:]
+        aa = aa + bb
+
+    return aa
