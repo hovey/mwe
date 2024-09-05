@@ -13,6 +13,8 @@ Example:
     pytest tests/test_command_line.py::test_hello_world -v
 """
 
+import pytest
+
 from cicd_example import command_line as cl
 
 
@@ -34,6 +36,12 @@ def test_renumber():
 
     result = cl.renumber(source=source, old=old, new=new)
     assert result == (9, 2, 42)
+
+    # Assure that tuples old and new of unequal length raise an AssertionError
+    new = (42, 2)  # overwrite
+    err = "Tuples `old` and `new` must have equal length."
+    with pytest.raises(AssertionError, match=err):
+        _ = cl.renumber(source=source, old=old, new=new)
 
 
 def test_mesh_with_element_connectivity():

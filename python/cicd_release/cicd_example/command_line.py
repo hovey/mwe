@@ -46,6 +46,11 @@ def renumber(source: tuple, old: tuple, new: tuple) -> tuple:
     """Given a source tuple, composed of a list of positive integers,
     a tuple of `old` numbers that maps into `new` numbers, return the
     source tuple with the `new` numbers."""
+
+    # the old and the new tuples musts have the same length
+    err = "Tuples `old` and `new` must have equal length."
+    assert len(old) == len(new), err
+
     result = ()
     for item in source:
         idx = old.index(item)
