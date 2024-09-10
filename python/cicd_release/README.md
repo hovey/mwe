@@ -203,3 +203,20 @@ Add the PAT to Repository Secrets:
   * Click "New repository secret."
   * Name the secret (e.g., `PERSONAL_ACCESS_TOKEN`).
   * Paste the PAT and save it.
+
+## Optional: Manually build wheel file
+
+To build a .whl file:
+
+```bash
+# Assure `setuptools` and `wheel` are installed and upgraded
+ pip install --upgrade pip setuptools
+pip install build
+
+# Create the .whle file
+cd ~/mwe/python/cicd_release (path contains the pyproject.toml file)
+python -m build
+
+# Verify the .whl file is built to ~/mwe/python/cicd_release/dist/
+# example: cicd_example-0.0.8-py3-none-any.whl
+```

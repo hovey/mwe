@@ -11,16 +11,6 @@ Example:
 
     to run just a single test in this module, for example
     pytest tests/test_command_line.py::test_hello_world -v
-
-    To build a .whl file
-    1. Assure `setuptools` and `wheel` are installed and upgraded
-        pip install --upgrade pip setuptools
-        pip install build
-    2. Create the .whle file
-        cd ~/mwe/python/cicd_release (path contains the pyproject.toml file)
-        python -m build
-    3. Verify the .whl file is built to ~/mwe/python/cicd_release/dist/
-        # example: cicd_example-0.0.8-py3-none-any.whl
 """
 
 import pytest
