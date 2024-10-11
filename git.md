@@ -374,9 +374,29 @@ Below are some commonly used Git branch commands, shown by way of example:
 > git branch --delete <branch_name>
 
     # examples
-    > git checkout maain
+    > git checkout main
     > git branch --delete feature/json_refactor
     > git branch -d gui_experiment  # -d is equivalent to --delete
+```
+
+## Git Rebase
+
+```sh
+git checkout my-branch-name
+git fetch origin
+git rebase origin/main
+
+# resolve any conflicts, check if conflicts with
+git status
+
+# after resolving, stage the changes
+git add resolve-files
+
+# then continue with the rebase
+git rebase --continue
+
+# if there are more conflicts, repeat above as necessary, then
+git push origin my-branch-name
 ```
 
 ## Distribution
