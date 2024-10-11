@@ -382,6 +382,9 @@ Below are some commonly used Git branch commands, shown by way of example:
 ## Git Rebase
 
 ```sh
+git checkout main
+git pull
+
 git checkout my-branch-name
 git fetch origin
 git rebase origin/main
