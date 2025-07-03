@@ -11,3 +11,5 @@ But no simpler.*
 * [Git](git.md)
 * [Python](python/README.md)
 * [Maturin](maturin/README.md)
+* [uv](uv.md)
+
