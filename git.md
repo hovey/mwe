@@ -484,3 +484,43 @@ Then, in the `~/pygators/engine/.gitconfig` file, create a specific user name an
 ```
 
 **Warning:**  Do not check your local `.gitconfig` folder into the repo, as it can the overwrite others' local `.gitconfig` when they pull the repo.  The `.gitignore` file in the repo should help to avoid checking in your personal `.gitconfig` file, since the `.gitignore` file indicates to ignore `.gitconfig` files.
+
+## Global `.gitignore`
+
+Create a global `.gitignore` file.  A common and recommended location is the home directory:
+
+```sh
+touch ~/.gitignore_global
+```
+
+The name can be anything, but `.gitignore_global` is a standard convention.
+
+Tell Git to use the global ignore file:
+
+```sh
+git config --global core.excludesfile ~/.gitignore_global
+```
+
+Items for the `~/.gitignore_global` file include:
+
+```sh
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.bak
+
+# Build/Log Files
+*.log
+*.class
+bin/
+target/
+
+# General
+.env
+```
+
