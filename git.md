@@ -491,6 +491,8 @@ Create a global `.gitignore` file.  A common and recommended location is the hom
 
 ```sh
 touch ~/.gitignore_global
+# alternatively
+touch ~/dotfiles/git/.gitignore_global
 ```
 
 The name can be anything, but `.gitignore_global` is a standard convention.
@@ -499,6 +501,8 @@ Tell Git to use the global ignore file:
 
 ```sh
 git config --global core.excludesfile ~/.gitignore_global
+# alternatively
+git config --global core.excludesfile ~/dotfiles/git/.gitignore_global
 ```
 
 Items for the `~/.gitignore_global` file include:
